@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asoudani <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 20:28:32 by asoudani          #+#    #+#              #
-#    Updated: 2025/04/10 20:28:35 by asoudani         ###   ########.fr        #
+#    Updated: 2025/04/11 11:55:38 by asoudani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
 
-SRC = main.c garbage_collector.c argument_utils.c phil_utils.c dinning_philos.c
+SRC = philo.c
 
 NAME = philo
 OBJ = $(SRC:.c=.o)
