@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/11 14:50:12 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/16 10:02:18 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,6 @@ bool	get_keep_iter(t_data *data)
 	pthread_mutex_unlock(&data->mut_keep_iter);
 	return (keep_iterating);
 }
-
-// int	get_nb_philos(t_data *data)
-// {
-// 	int	nb_philos;
-
-// 	pthread_mutex_lock(&data->mut_nb_philos);
-// 	nb_philos = data->nb_philos;
-// 	pthread_mutex_unlock(&data->mut_nb_philos);
-// 	return (nb_philos);
-// }
 
 // t_state	get_philo_state(t_philo *philo)
 // {
@@ -268,9 +258,9 @@ int	argument_init(t_data *data, int ac, char **av)
 	data->nb_full_p = 0;
 	data->keep_iterating = true;
 	data->nb_philos = ft_atol(av[1]);
-	data->die_time = (size_t) ft_atol(av[2]);
-	data->eat_time = (size_t) ft_atol(av[3]);
-	data->sleep_time = (size_t) ft_atol(av[4]);
+	data->die_time = ft_atol(av[2]);
+	data->eat_time = ft_atol(av[3]);
+	data->sleep_time = ft_atol(av[4]);
 	data->nb_meals = -1;
 	if (ac == 6)
 		data->nb_meals = ft_atol(av[5]);
@@ -285,18 +275,16 @@ int	argument_init(t_data *data, int ac, char **av)
 	return (SUCCESS);
 }
 
-void	*all_alive_routine(void *data_p)
+void	*all_alive_routine(void *s_data)
 {
 	int		i;
-	int		nb_philos;
 	t_data	*data;
 	t_philo	*philos;
 
-	data = (t_data *)data_p;
+	data = (t_data *)s_data;
 	philos = data->philos;
-	nb_philos = get_nb_philos(data);
 	i = -1;
-	while (++i < nb_philos && get_keep_iter(data))
+	while (++i < data->nb_philos && get_keep_iter(data))
 	{
 		if (philo_died(&philos[i]) && get_keep_iter(data))
 		{
@@ -305,7 +293,7 @@ void	*all_alive_routine(void *data_p)
 			// notify_all_philos(data);
 			break ;
 		}
-		if (i == nb_philos - 1)
+		if (i == data->nb_philos - 1)
 			i = -1;
 		usleep(1000);
 	}
