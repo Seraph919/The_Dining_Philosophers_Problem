@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:01:20 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:24:50 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 bool	philo_died(t_philo *philo)
 {
-	t_data		*data;
+	t_data	*data;
 
 	data = philo->data;
 	pthread_mutex_lock(&data->die_mutex);
-	if (get_time() - philo->last_eat_time > data->time2die )
+	if (get_time() - philo->last_eat_time > data->time2die)
 	{
-		// printf(RED"DIED\n"RESET);
 		pthread_mutex_unlock(&data->die_mutex);
 		return (true);
 	}
@@ -68,9 +67,9 @@ void	print_msg(t_data *data, int id, char *msg)
 	{
 		pthread_mutex_unlock(&data->non_dead_mutex);
 		if (id % 2)
-		printf(BLUE"%zu %d %s\n"RESET, time, id, msg);
+			printf(BLUE "%zu %d %s\n" RESET, time, id, msg);
 		else
-		printf(GREEN"%zu %d %s\n"RESET, time, id, msg);
+			printf(GREEN "%zu %d %s\n" RESET, time, id, msg);
 	}
 	else
 		pthread_mutex_unlock(&data->non_dead_mutex);

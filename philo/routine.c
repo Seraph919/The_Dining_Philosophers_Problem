@@ -16,7 +16,7 @@ void	*routine(void *arg)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *) arg;
+	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->data->die_mutex);
 	philo->last_eat_time = get_time();
 	pthread_mutex_unlock(&philo->data->die_mutex);
@@ -31,16 +31,16 @@ void	*routine(void *arg)
 			return (pthread_mutex_unlock(&philo->data->non_dead_mutex), NULL);
 		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 		if (eating(philo) != 0)
-			break;
+			break ;
 		if (sleeping(philo) != 0)
-			break;
+			break ;
 		if (thinking(philo) != 0)
-			break;
+			break ;
 	}
 	return (NULL);
 }
 
-void release_forks(t_philo *philo, bool odd)
+void	release_forks(t_philo *philo, bool odd)
 {
 	if (odd)
 	{
@@ -55,8 +55,9 @@ void release_forks(t_philo *philo, bool odd)
 int	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->non_dead_mutex);
-	if (philo->data->no_one_died == false || (philo->nb_meals_had >=
-			philo->data->max_nmeals && philo->data->max_nmeals != -1))
+	if (philo->data->no_one_died == false
+		|| (philo->nb_meals_had >= philo->data->max_nmeals
+			&& philo->data->max_nmeals != -1))
 	{
 		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 		return (1);
