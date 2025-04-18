@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:44:30 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:31:23 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:58:13 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,11 @@ int	philo_init(t_data *data)
 		philos[i].data = data;
 		philos[i].id = i + 1;
 		philos[i].nb_meals_had = 0;
-		if (pthread_mutex_init(&philos[i].mut_nb_meals_had, NULL) != 0)
+		if (pthread_mutex_init(&philos[i].last_eat_mutex, NULL) != 0)
 			return (ERROR);
-		if (pthread_mutex_init(&philos[i].mut_last_eat_time, NULL) != 0)
-			return (ERROR);
-		pthread_mutex_lock(&philos[i].mut_last_eat_time);
+		pthread_mutex_lock(&philos[i].last_eat_mutex);
 		philos[i].last_eat_time = get_time();
-		pthread_mutex_unlock(&philos[i].mut_last_eat_time);
+		pthread_mutex_unlock(&philos[i].last_eat_mutex);
 	}
 	return (SUCCESS);
 }

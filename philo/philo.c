@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:43:47 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:58:13 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,39 +45,36 @@ int	take_forks(t_philo *philo)
 	if (philo->id % 2 == 0)
 	{
 		if (take_left_fork(philo) != 0 || philo_died(philo))
-			return (1);
+		{
+			if (philo_died(philo))
+				return (pthread_mutex_unlock(philo->left_f), ERROR);
+		}
 		if (take_right_fork(philo) != 0 || philo_died(philo))
 		{
 			if (philo_died(philo))
-				pthread_mutex_unlock(philo->left_f);
+				pthread_mutex_unlock(philo->right_f);
 			pthread_mutex_unlock(philo->left_f);
-			return (1);
+			return (ERROR);
 		}
 	}
 	else
 	{
 		if (take_right_fork(philo) != 0 || philo_died(philo))
-			return (1);
+		{
+			if (philo_died(philo))
+				return (pthread_mutex_unlock(philo->right_f), ERROR);
+		}
 		if (take_left_fork(philo) != 0 || philo_died(philo))
 		{
 			if (philo_died(philo))
 				pthread_mutex_unlock(philo->left_f);
 			pthread_mutex_unlock(philo->right_f);
-			return (1);
+			return (ERROR);
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-bool	is_philo_full(t_data *data, t_philo *philo)
-{
-	bool	result;
-
-	result = false;
-	if (philo->nb_meals_had >= data->max_nmeals)
-		result = true;
-	return (result);
-}
 
 bool	philo_died(t_philo *philo)
 {
@@ -87,7 +84,7 @@ bool	philo_died(t_philo *philo)
 	pthread_mutex_lock(&data->die_mutex);
 	if (get_time() - philo->last_eat_time > data->time2die )
 	{
-		printf(RED"DIED\n"RESET);
+		// printf(RED"DIED\n"RESET);
 		pthread_mutex_unlock(&data->die_mutex);
 		return (true);
 	}
@@ -184,8 +181,7 @@ void	free_data(t_data *data)
 	while (++i < data->philo_nbrs)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philos[i].mut_nb_meals_had);
-		pthread_mutex_destroy(&data->philos[i].mut_last_eat_time);
+		pthread_mutex_destroy(&data->philos[i].last_eat_mutex);
 	}
 	pthread_mutex_destroy(&data->die_mutex);
 	pthread_mutex_destroy(&data->eat_mutex);
@@ -207,10 +203,12 @@ void	print_msg(t_data *data, int id, char *msg)
 	{
 		pthread_mutex_unlock(&data->non_dead_mutex);
 		if (id % 2)
-		printf(BLUE"%lu %d %s\n"RESET, time, id, msg);
+		printf(BLUE"%zu %d %s\n"RESET, time, id, msg);
 		else
-		printf(GREEN"%lu %d %s\n"RESET, time, id, msg);
+		printf(GREEN"%zu %d %s\n"RESET, time, id, msg);
 	}
+	else
+		pthread_mutex_unlock(&data->non_dead_mutex);
 	pthread_mutex_unlock(&data->print_lock);
 }
 

@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:09:18 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:31:02 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:54:24 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,3 @@ void	*all_alive_routine(void *s_data)
 	}
 	return (NULL);
 }
-
-// void	*all_full_routine(void *data_p)
-// {
-// 	t_data	*data;
-// 	int		i;
-
-// 	data = (t_data *)data_p;
-// 	i = -1;
-// 	while (++i < data->nb_philos && data->no_one_died)
-// 	{
-// 		usleep(1000);
-// 		if (is_philo_full(data, &data->philos[i]) == false)
-// 			i = -1;
-// 	}
-// 	// if (data->no_one_died)
-// 	// {
-// 	// 	set_keep_iterating(data, false);
-// 	// 	// notify_all_philos(data);
-// 	// }
-// 	return (NULL);
-// }
