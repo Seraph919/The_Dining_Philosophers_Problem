@@ -6,14 +6,14 @@
 #    By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 20:28:32 by asoudani          #+#    #+#              #
-#    Updated: 2025/04/17 20:43:40 by asoudani         ###   ########.fr        #
+#    Updated: 2025/04/18 18:00:05 by asoudani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=thread
 
-SRC = philo.c utils.c arg_related.c dinning.c initialization.c main.c monitoring.c
+SRC = philo_utils.c utils.c arg_related.c routine.c initialization.c main.c monitoring.c fork_utils.c
 
 NAME = philo
 OBJ = $(SRC:.c=.o)

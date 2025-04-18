@@ -6,11 +6,37 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 18:28:13 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/16 18:28:26 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:59:04 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	simulation(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	data->start_time = get_time();
+	while (++i < data->philo_nbrs)
+	{
+		if (pthread_create(&data->philo_ths[i], NULL,
+				&routine, &data->philos[i]))
+			return (ERROR);
+	}
+	if (pthread_create(&data->monitor_th, NULL,
+			&monitor, data))
+		return (ERROR);
+	if (pthread_join(data->monitor_th, NULL) != SUCCESS)
+			return (ERROR);
+	i = -1;
+	while (++i < data->philo_nbrs)
+	{
+		if (pthread_join(data->philo_ths[i], NULL) != SUCCESS)
+			return (ERROR);
+	}
+	return (SUCCESS);
+}
 
 int	main(int ac, char **av)
 {
@@ -20,11 +46,9 @@ int	main(int ac, char **av)
 		return (arguments_error(), ERROR);
 	if (initialization(&data, av) != SUCCESS)
 		return (return_error("Initialization failed\n"));
-	if (thread_creation(&data) != SUCCESS)
+	if (simulation(&data) != SUCCESS)
 		return (return_error("Threads failed\n"));
-	if (join_threads(&data) != SUCCESS)
-		return (return_error("Joining failed\n"));
-	free_data(&data);
+	fireforce(&data);
 
 	return (SUCCESS);
 }

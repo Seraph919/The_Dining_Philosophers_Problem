@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dinning.c                                          :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 18:01:54 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:40:35 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:41:37 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*routine(void *philo_p)
+void	*routine(void *arg)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *) philo_p;
+	philo = (t_philo *) arg;
 	pthread_mutex_lock(&philo->data->die_mutex);
 	philo->last_eat_time = get_time();
 	pthread_mutex_unlock(&philo->data->die_mutex);
@@ -26,33 +26,16 @@ void	*routine(void *philo_p)
 		return (handle_1_philo(philo), NULL);
 	while (1)
 	{
+		pthread_mutex_lock(&philo->data->non_dead_mutex);
+		if (philo->data->no_one_died == false)
+			return (pthread_mutex_unlock(&philo->data->non_dead_mutex), NULL);
+		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 		if (eating(philo) != 0)
 			break;
-		pthread_mutex_lock(&philo->data->non_dead_mutex);
-		if (philo->data->no_one_died == false)
-		{
-			pthread_mutex_unlock(&philo->data->non_dead_mutex);
-			break;
-		}
-		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 		if (sleeping(philo) != 0)
 			break;
-		pthread_mutex_lock(&philo->data->non_dead_mutex);
-		if (philo->data->no_one_died == false)
-		{
-			pthread_mutex_unlock(&philo->data->non_dead_mutex);
-			break;
-		}
-		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 		if (thinking(philo) != 0)
 			break;
-		pthread_mutex_lock(&philo->data->non_dead_mutex);
-		if (philo->data->no_one_died == false)
-		{
-			pthread_mutex_unlock(&philo->data->non_dead_mutex);
-			break;
-		}
-		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 	}
 	return (NULL);
 }
@@ -63,12 +46,10 @@ void release_forks(t_philo *philo, bool odd)
 	{
 		pthread_mutex_unlock(philo->left_f);
 		pthread_mutex_unlock(philo->right_f);
+		return ;
 	}
-	else
-	{
-		pthread_mutex_unlock(philo->right_f);
-		pthread_mutex_unlock(philo->left_f);
-	}
+	pthread_mutex_unlock(philo->right_f);
+	pthread_mutex_unlock(philo->left_f);
 }
 
 int	eating(t_philo *philo)

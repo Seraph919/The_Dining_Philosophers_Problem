@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 13:58:13 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:14:37 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,33 +83,26 @@ typedef struct s_data
 }				t_data;
 
 int	eating(t_philo *philo);
-void	drop_left_fork(t_philo *philo);
-void	drop_right_fork(t_philo *philo);
 int	take_left_fork(t_philo *philo);
 int	take_right_fork(t_philo *philo);
 int	take_forks(t_philo *philo);
 int	forks_init(t_data *data);
 int	philo_init(t_data *data);
 int	arguments_error(void);
-void	*all_alive_routine(void *data_p);
+void	*monitor(void *data_p);
 bool	philo_died(t_philo *philo);
 int	arguments_check(int argc, char **argv);
 size_t	ft_atol(const char *str);
 int	check_input(int argc, char **argv);
-int	thread_creation(t_data *data);
-int	join_threads(t_data *data);
-
+int	simulation(t_data *data);
 void	*routine(void *philo_p);
-void	print_nb_meals_had(t_philo *philo);
 int	sleeping(t_philo *philo);
 int	thinking(t_philo *philo);
-void	wait_until(size_t wakeup_time);
 void	usleepp(size_t sleep_time);
 size_t	get_time(void);
 void	handle_1_philo(t_philo *philo);
-void	free_data(t_data *data);
+void	fireforce(t_data *data);
 void	print_msg(t_data *data, int id, char *msg);
-void	print_mut(t_data *data, char *msg);
 int argumentCheckers(char **av);
 int	initialization(t_data *data, char **av);
 int mutex_inits(t_data *data);
