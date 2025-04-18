@@ -41,7 +41,7 @@ int	initialization(t_data *data, char **av)
 	return (SUCCESS);
 }
 
-int mutex_inits(t_data *data)
+int	mutex_inits(t_data *data)
 {
 	if (pthread_mutex_init(&data->eat_mutex, NULL) != 0)
 		return (ERROR);

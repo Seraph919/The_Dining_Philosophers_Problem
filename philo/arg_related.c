@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:44:20 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/17 10:46:00 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:24:42 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	arguments_error(void)
 	printf("%s<%s(opt):[Number of Meals]%s> %s\n", BLUE, GREEN, BLUE, RESET);
 	return (ERROR);
 }
-
 
 int	arguments_check(int ac, char **av)
 {
@@ -41,7 +40,6 @@ int	arguments_check(int ac, char **av)
 	return (SUCCESS);
 }
 
-
 int	check_input(int ac, char **av)
 {
 	int	i;
@@ -50,13 +48,14 @@ int	check_input(int ac, char **av)
 	while (i < ac)
 	{
 		if (NonNumericFound(av[i]))
-		return (ERROR);
+			return (ERROR);
 	}
 	if (arguments_check(ac, av))
 		return (ERROR);
 	return (0);
 }
-int argumentCheckers(char **av)
+
+int	argument_checkers(char **av)
 {
 	int	i;
 
@@ -64,15 +63,16 @@ int argumentCheckers(char **av)
 	while (av[i])
 	{
 		if (ft_atol(av[1]) == 0)
-			return (printf(RED"at least 2 philos needed to start the sim\n"RESET), ERROR);
+			return (printf(RED "At Least 2 Philos Needed\n" RESET), ERROR);
 		if (ft_atol(av[1]) > 200)
-			return (printf("The number of philos should be below 200\n"), ERROR);
-		if(NonNumericFound(av[i]))
+			return (printf("The Number of Philos Should be Below 200\n"),
+				ERROR);
+		if (NonNumericFound(av[i]))
 			return (arguments_error(), ERROR);
 		if ((i != 5 && ft_atol(av[i]) == 0))
-			return (printf("Please provide a valid input.\n"), ERROR);
+			return (printf("Please Provide a Valid Input.\n"), ERROR);
 		if ((i != 1 && i != 5) && ft_atol(av[i]) < 60)
-			return (printf("times Should be above 60ms.\n"));
+			return (printf("Time Values Should be Above 60ms.\n"));
 		i++;
 	}
 	return (SUCCESS);

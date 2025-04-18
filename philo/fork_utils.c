@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:00:29 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:14:17 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:25:03 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	left_first(t_philo *philo)
 	return (SUCCESS);
 }
 
-int right_first(t_philo *philo)
+int	right_first(t_philo *philo)
 {
 	if (take_right_fork(philo) != 0 || philo_died(philo))
 	{
@@ -61,7 +61,7 @@ int right_first(t_philo *philo)
 		pthread_mutex_unlock(philo->right_f);
 		return (ERROR);
 	}
-	return(SUCCESS);
+	return (SUCCESS);
 }
 
 int	take_forks(t_philo *philo)
