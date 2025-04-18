@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:07:12 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:31:11 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ typedef struct s_data
 	pthread_mutex_t	die_mutex;
 
 	pthread_mutex_t	print_lock;
-	pthread_mutex_t	mut_nb_philos;
-	pthread_mutex_t	mut_keep_iter;
-	pthread_mutex_t	mut_start_time;
+	pthread_mutex_t	non_dead_mutex;
 	pthread_t		monitor_th;
 	pthread_t		monit_all_full;
 	pthread_t		*philo_ths;
