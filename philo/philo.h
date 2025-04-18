@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:31:11 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:58:13 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ typedef struct s_philo
     struct s_data	*data;
     pthread_mutex_t	*left_f;
     pthread_mutex_t	*right_f;
-    pthread_mutex_t	mut_nb_meals_had;
-    pthread_mutex_t	mut_last_eat_time;
+    pthread_mutex_t	last_eat_mutex;
     size_t			last_eat_time;
 }				t_philo;
 
@@ -93,9 +92,7 @@ int	forks_init(t_data *data);
 int	philo_init(t_data *data);
 int	arguments_error(void);
 void	*all_alive_routine(void *data_p);
-bool	is_philo_full(t_data *data, t_philo *philo);
 bool	philo_died(t_philo *philo);
-void	*all_full_routine(void *data_p);
 int	arguments_check(int argc, char **argv);
 size_t	ft_atol(const char *str);
 int	check_input(int argc, char **argv);
