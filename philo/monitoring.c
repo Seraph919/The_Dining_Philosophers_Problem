@@ -6,20 +6,20 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:09:18 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 13:54:24 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:18:16 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 
-void	*all_alive_routine(void *s_data)
+void	*monitor(void *arg)
 {
 	int		i;
 	t_data	*data;
 	t_philo	*philos;
 
-	data = (t_data *)s_data;
+	data = (t_data *)arg;
 	philos = data->philos;
 	i = -1;
 	while (++i < data->philo_nbrs)
