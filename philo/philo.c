@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:11:16 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:43:47 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ int	take_forks(t_philo *philo)
 	{
 		if (take_left_fork(philo) != 0 || philo_died(philo))
 			return (1);
-		if (take_right_fork(philo) != 0|| philo_died(philo))
+		if (take_right_fork(philo) != 0 || philo_died(philo))
 		{
+			if (philo_died(philo))
+				pthread_mutex_unlock(philo->left_f);
 			pthread_mutex_unlock(philo->left_f);
 			return (1);
 		}
@@ -58,6 +60,8 @@ int	take_forks(t_philo *philo)
 			return (1);
 		if (take_left_fork(philo) != 0 || philo_died(philo))
 		{
+			if (philo_died(philo))
+				pthread_mutex_unlock(philo->left_f);
 			pthread_mutex_unlock(philo->right_f);
 			return (1);
 		}
@@ -167,9 +171,9 @@ void	handle_1_philo(t_philo *philo)
 	take_left_fork(philo);
 	usleepp(philo->data->time2die);
 	pthread_mutex_unlock(philo->left_f);
-	pthread_mutex_lock(&philo->data->mut_keep_iter);
+	pthread_mutex_lock(&philo->data->non_dead_mutex);
 	philo->data->no_one_died = false;
-	pthread_mutex_unlock(&philo->data->mut_keep_iter);
+	pthread_mutex_unlock(&philo->data->non_dead_mutex);
 }
 
 void	free_data(t_data *data)
@@ -185,10 +189,8 @@ void	free_data(t_data *data)
 	}
 	pthread_mutex_destroy(&data->die_mutex);
 	pthread_mutex_destroy(&data->eat_mutex);
-	pthread_mutex_destroy(&data->mut_nb_philos);
 	pthread_mutex_destroy(&data->print_lock);
-	pthread_mutex_destroy(&data->mut_keep_iter);
-	pthread_mutex_destroy(&data->mut_start_time);
+	pthread_mutex_destroy(&data->non_dead_mutex);
 	free(data->philo_ths);
 	free(data->philos);
 	free(data->forks);
@@ -200,10 +202,10 @@ void	print_msg(t_data *data, int id, char *msg)
 
 	time = get_time() - data->start_time;
 	pthread_mutex_lock(&data->print_lock);
-	pthread_mutex_lock(&data->mut_keep_iter);
+	pthread_mutex_lock(&data->non_dead_mutex);
 	if (data->no_one_died)
 	{
-		pthread_mutex_unlock(&data->mut_keep_iter);
+		pthread_mutex_unlock(&data->non_dead_mutex);
 		if (id % 2)
 		printf(BLUE"%lu %d %s\n"RESET, time, id, msg);
 		else

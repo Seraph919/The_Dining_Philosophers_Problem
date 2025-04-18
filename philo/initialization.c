@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:44:30 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 12:09:12 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:31:23 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,7 @@ int mutex_inits(t_data *data)
 		return (ERROR);
 	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
 		return (ERROR);
-	if (pthread_mutex_init(&data->mut_nb_philos, NULL) != 0)
-		return (ERROR);
-	if (pthread_mutex_init(&data->mut_keep_iter, NULL) != 0)
-		return (ERROR);
-	if (pthread_mutex_init(&data->mut_start_time, NULL) != 0)
+	if (pthread_mutex_init(&data->non_dead_mutex, NULL) != 0)
 		return (ERROR);
 	return (SUCCESS);
 }
