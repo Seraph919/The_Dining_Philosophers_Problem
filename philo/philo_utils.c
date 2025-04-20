@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:24:50 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:55:48 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	handle_1_philo(t_philo *philo)
 	pthread_mutex_lock(&philo->data->non_dead_mutex);
 	philo->data->no_one_died = false;
 	pthread_mutex_unlock(&philo->data->non_dead_mutex);
+	print_msg(philo->data, philo->id, DIED);
 }
 
 void	fireforce(t_data *data)
@@ -48,6 +49,7 @@ void	fireforce(t_data *data)
 		pthread_mutex_destroy(&data->philos[i].last_eat_mutex);
 	}
 	pthread_mutex_destroy(&data->die_mutex);
+	pthread_mutex_destroy(&data->meal_counter_mutex);
 	pthread_mutex_destroy(&data->eat_mutex);
 	pthread_mutex_destroy(&data->print_lock);
 	pthread_mutex_destroy(&data->non_dead_mutex);
@@ -59,7 +61,11 @@ void	fireforce(t_data *data)
 void	print_msg(t_data *data, int id, char *msg)
 {
 	size_t	time;
+	bool	not_full;
 
+	pthread_mutex_lock(&data->meal_counter_mutex);
+	not_full = data->philos[id -1].nb_meals_had != data->max_nmeals;
+	pthread_mutex_unlock(&data->meal_counter_mutex);
 	time = get_time() - data->start_time;
 	pthread_mutex_lock(&data->print_lock);
 	pthread_mutex_lock(&data->non_dead_mutex);
@@ -70,6 +76,11 @@ void	print_msg(t_data *data, int id, char *msg)
 			printf(BLUE "%zu %d %s\n" RESET, time, id, msg);
 		else
 			printf(GREEN "%zu %d %s\n" RESET, time, id, msg);
+	}
+	else if (msg[0] == 'd' && not_full)
+	{
+		pthread_mutex_unlock(&data->non_dead_mutex);
+		printf(RED "%zu %d %s\n" RESET, time, id, DIED);
 	}
 	else
 		pthread_mutex_unlock(&data->non_dead_mutex);

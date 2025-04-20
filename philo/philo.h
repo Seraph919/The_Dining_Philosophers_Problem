@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:23:44 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:54:09 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_data
 	size_t			time2sleep;
 	size_t			time2die;
 	pthread_mutex_t	eat_mutex;
+	pthread_mutex_t	meal_counter_mutex;
 	pthread_mutex_t	die_mutex;
 
 	pthread_mutex_t	print_lock;
