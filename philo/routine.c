@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 18:01:54 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 17:41:37 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:55:19 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ int	eating(t_philo *philo)
 	philo->last_eat_time = get_time();
 	pthread_mutex_unlock(&philo->data->die_mutex);
 	usleepp(philo->data->time2eat);
+	pthread_mutex_lock(&philo->data->meal_counter_mutex);
 	philo->nb_meals_had++;
+	pthread_mutex_unlock(&philo->data->meal_counter_mutex);
 	release_forks(philo, philo->id % 2);
 	return (0);
 }
@@ -82,14 +84,16 @@ int	eating(t_philo *philo)
 int	sleeping(t_philo *philo)
 {
 	print_msg(philo->data, philo->id, SLEEP);
-	usleepp(philo->data->time2sleep);
 	pthread_mutex_lock(&philo->data->non_dead_mutex);
-	if (philo->data->no_one_died == false)
+	if (philo->data->no_one_died == false
+		|| (philo->nb_meals_had >= philo->data->max_nmeals
+			&& philo->data->max_nmeals != -1))
 	{
 		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->data->non_dead_mutex);
+	usleepp(philo->data->time2sleep);
 	return (0);
 }
 
@@ -97,7 +101,9 @@ int	thinking(t_philo *philo)
 {
 	print_msg(philo->data, philo->id, THINK);
 	pthread_mutex_lock(&philo->data->non_dead_mutex);
-	if (philo->data->no_one_died == false)
+	if (philo->data->no_one_died == false
+		|| (philo->nb_meals_had >= philo->data->max_nmeals
+			&& philo->data->max_nmeals != -1))
 	{
 		pthread_mutex_unlock(&philo->data->non_dead_mutex);
 		return (1);

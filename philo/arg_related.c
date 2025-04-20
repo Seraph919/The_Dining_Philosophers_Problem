@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:44:20 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:24:42 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:26:04 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_input(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-		if (NonNumericFound(av[i]))
+		if (non_numeric_found(av[i]))
 			return (ERROR);
 	}
 	if (arguments_check(ac, av))
@@ -67,7 +67,7 @@ int	argument_checkers(char **av)
 		if (ft_atol(av[1]) > 200)
 			return (printf("The Number of Philos Should be Below 200\n"),
 				ERROR);
-		if (NonNumericFound(av[i]))
+		if (non_numeric_found(av[i]))
 			return (arguments_error(), ERROR);
 		if ((i != 5 && ft_atol(av[i]) == 0))
 			return (printf("Please Provide a Valid Input.\n"), ERROR);

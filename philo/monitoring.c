@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:09:18 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:24:28 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 12:20:20 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	*monitor(void *arg)
 		{
 			data->no_one_died = false;
 			pthread_mutex_unlock(&data->non_dead_mutex);
+			print_msg(data, philos[i].id, DIED);
 			break ;
 		}
 		if (i == data->philo_nbrs - 1)

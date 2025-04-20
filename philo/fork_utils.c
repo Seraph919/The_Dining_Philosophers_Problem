@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:00:29 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:25:03 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:56:11 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,20 @@ int	take_right_fork(t_philo *philo)
 
 int	left_first(t_philo *philo)
 {
-	if (take_left_fork(philo) != 0 || philo_died(philo))
+	int	res;
+
+	res = take_left_fork(philo);
+	if (res != 0 || philo_died(philo))
 	{
-		if (philo_died(philo))
+		if (philo_died(philo) && res == 0)
 			return (pthread_mutex_unlock(philo->left_f), ERROR);
+		else
+			return (ERROR);
 	}
-	if (take_right_fork(philo) != 0 || philo_died(philo))
+	res = take_right_fork(philo);
+	if (res != 0 || philo_died(philo))
 	{
-		if (philo_died(philo))
+		if (philo_died(philo) && res == 0)
 			pthread_mutex_unlock(philo->right_f);
 		pthread_mutex_unlock(philo->left_f);
 		return (ERROR);
@@ -49,14 +55,20 @@ int	left_first(t_philo *philo)
 
 int	right_first(t_philo *philo)
 {
-	if (take_right_fork(philo) != 0 || philo_died(philo))
+	int	res;
+
+	res = take_right_fork(philo);
+	if (res != 0 || philo_died(philo))
 	{
-		if (philo_died(philo))
+		if (philo_died(philo) && res == 0)
 			return (pthread_mutex_unlock(philo->right_f), ERROR);
+		else
+			return (ERROR);
 	}
-	if (take_left_fork(philo) != 0 || philo_died(philo))
+	res = take_left_fork(philo);
+	if (res != 0 || philo_died(philo))
 	{
-		if (philo_died(philo))
+		if (philo_died(philo) && res == 0)
 			pthread_mutex_unlock(philo->left_f);
 		pthread_mutex_unlock(philo->right_f);
 		return (ERROR);
@@ -66,6 +78,13 @@ int	right_first(t_philo *philo)
 
 int	take_forks(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->non_dead_mutex);
+	if (philo->data->no_one_died == false)
+	{
+		pthread_mutex_unlock(&philo->data->non_dead_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->non_dead_mutex);
 	if (philo->id % 2 == 0)
 		return (left_first(philo));
 	return (right_first(philo));
