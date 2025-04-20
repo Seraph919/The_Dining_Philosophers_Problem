@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 14:55:48 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:59:33 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ bool	philo_died(t_philo *philo)
 	t_data	*data;
 
 	data = philo->data;
-	pthread_mutex_lock(&data->die_mutex);
+	pthread_mutex_lock(&data->phile_died_mutex);
 	if (get_time() - philo->last_eat_time > data->time2die)
 	{
-		pthread_mutex_unlock(&data->die_mutex);
+		pthread_mutex_unlock(&data->phile_died_mutex);
 		return (true);
 	}
-	pthread_mutex_unlock(&data->die_mutex);
+	pthread_mutex_unlock(&data->phile_died_mutex);
 	return (false);
 }
 
@@ -48,7 +48,7 @@ void	fireforce(t_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 		pthread_mutex_destroy(&data->philos[i].last_eat_mutex);
 	}
-	pthread_mutex_destroy(&data->die_mutex);
+	pthread_mutex_destroy(&data->phile_died_mutex);
 	pthread_mutex_destroy(&data->meal_counter_mutex);
 	pthread_mutex_destroy(&data->eat_mutex);
 	pthread_mutex_destroy(&data->print_lock);
