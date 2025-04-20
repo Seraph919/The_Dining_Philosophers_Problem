@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:12:08 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 15:26:33 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 20:01:21 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,16 @@ int	argument_checkers(char **av)
 	while (av[i])
 	{
 		if (ft_atol(av[1]) < 1 || ft_atol(av[1]) == 0)
-			return (printf(RED"2 or more Philos are required.\n"RESET), ERROR);
+			return (printf(RED "2 or more Philos are required.\n" RESET),
+				ERROR);
 		if (ft_atol(av[1]) > 200)
-			return (printf(RED"Philos're more than 200.\n"RESET), ERROR);
-		if (NonNumericFound(av[i]))
+			return (printf(RED "Philos're more than 200.\n" RESET), ERROR);
+		if (non_num_found(av[i]))
 			return (arguments_error(), ERROR);
 		if ((i != 5 && ft_atol(av[i]) == 0))
-			return (printf(RED"Please provide a valid input.\n"RESET), ERROR);
+			return (printf(RED "Please provide a valid input.\n" RESET), ERROR);
 		if (i != 1 && i != 5 && ft_atol(av[i]) < 60)
-			return (printf(RED"Times should be above 60ms.\n"RESET), ERROR);
+			return (printf(RED "Times should be above 60ms.\n" RESET), ERROR);
 		i++;
 	}
 	return (SUCCESS);
@@ -51,7 +52,7 @@ int	av_arguments_init(t_data *data, char **av)
 	data->ender = false;
 	data->philo_died = false;
 	data->last_mealtime = 0;
-	data->start_time = msCrntTime();
+	data->start_time = ms_curr_time();
 	data->number_of_philos = ft_atol(av[1]);
 	data->ids = malloc(sizeof(int) * data->number_of_philos);
 	data->time_to_die = ft_atol(av[2]);

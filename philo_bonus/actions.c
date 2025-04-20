@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:14:43 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 19:56:59 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 20:01:56 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,18 @@
 			pthread_mutex_lock(&philo->m_lock);
 			if (philo->last_meal_t > 0)
 			{
-				if (philo->data->time_to_die <= msCrntTime()-philo->last_meal_t)
+	if (philo->data->time_to_die <= ms_curr_time()-philo->last_meal_t)
 				{
 					pthread_mutex_lock(&philo->dead_lock);
 					philo->dead = true;
 					pthread_mutex_unlock(&philo->dead_lock);
 					sem_post(philo->data->quiter);
 					pthread_mutex_unlock(&philo->m_lock); // Ensure unlock
-					break;
+					break ;
 				}
 			}
-			pthread_mutex_unlock(&philo->m_lock); // Ensure unlock in other cases
+			pthread_mutex_unlock(&philo->m_lock);
+				// Ensure unlock in other cases
 		}
 		return (NULL);
 	}
@@ -67,13 +68,13 @@ void	print_message(t_philo *philo, char *msg)
 
 	not_full = philo->meal_counter < philo->max_meals;
 	sem_wait(philo->data->print_lock);
-	time = msCrntTime() - philo->data->start_time;
+	time = ms_curr_time() - philo->data->start_time;
 	if (philo->dead == false)
 	{
 		if (philo->id % 2)
-			printf(BLUE"%zu %zu is %s\n"RESET, time, philo->id, msg);
+			printf(BLUE "%zu %zu is %s\n" RESET, time, philo->id, msg);
 		else
-			printf(GREEN"%zu %zu is %s\n"RESET, time, philo->id, msg);
+			printf(GREEN "%zu %zu is %s\n" RESET, time, philo->id, msg);
 	}
 	else if (msg[0] == 'd' && (not_full || philo->max_meals == -1))
 	{
@@ -100,7 +101,7 @@ void	eating(t_philo *philo)
 {
 	fork_taking(philo);
 	pthread_mutex_lock(&philo->last_meal_up);
-	philo->last_meal_t = msCrntTime();
+	philo->last_meal_t = ms_curr_time();
 	pthread_mutex_unlock(&philo->last_meal_up);
 	print_message(philo, EAT);
 	mssleep(philo->data->time_to_eat);
