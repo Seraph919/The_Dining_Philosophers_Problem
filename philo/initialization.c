@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:44:30 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 13:48:58 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:59:33 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	mutex_inits(t_data *data)
 {
 	if (pthread_mutex_init(&data->eat_mutex, NULL) != 0)
 		return (ERROR);
-	if (pthread_mutex_init(&data->die_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->phile_died_mutex, NULL) != 0)
 		return (ERROR);
 	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
 		return (ERROR);
