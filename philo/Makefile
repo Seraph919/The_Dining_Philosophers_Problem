@@ -6,12 +6,12 @@
 #    By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 20:28:32 by asoudani          #+#    #+#              #
-#    Updated: 2025/04/20 14:40:22 by asoudani         ###   ########.fr        #
+#    Updated: 2025/04/20 20:46:05 by asoudani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
 
 SRC = philo_utils.c utils.c arg_related.c routine.c initialization.c main.c monitoring.c fork_utils.c
 

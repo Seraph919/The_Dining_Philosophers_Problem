@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 18:01:54 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 14:59:33 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:27:14 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ int	eating(t_philo *philo)
 		|| (philo->nb_meals_had >= philo->data->max_nmeals
 			&& philo->data->max_nmeals != -1))
 	{
+		philo->data->no_one_died = false;
 		pthread_mutex_unlock(&philo->data->non_dead_mutex);
-		return (1);
+		return (ERROR);
 	}
 	pthread_mutex_unlock(&philo->data->non_dead_mutex);
 	if (philo->id % 2)
@@ -68,7 +69,7 @@ int	eating(t_philo *philo)
 	if (philo->data->philo_nbrs < 100)
 		usleep(500);
 	if (take_forks(philo) != 0)
-		return (1);
+		return (ERROR);
 	print_msg(philo->data, philo->id, EAT);
 	pthread_mutex_lock(&philo->data->phile_died_mutex);
 	philo->last_eat_time = get_time();
@@ -77,8 +78,7 @@ int	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->data->meal_counter_mutex);
 	philo->nb_meals_had++;
 	pthread_mutex_unlock(&philo->data->meal_counter_mutex);
-	release_forks(philo, philo->id % 2);
-	return (0);
+	return (release_forks(philo, philo->id % 2), SUCCESS);
 }
 
 int	sleeping(t_philo *philo)
@@ -90,11 +90,11 @@ int	sleeping(t_philo *philo)
 			&& philo->data->max_nmeals != -1))
 	{
 		pthread_mutex_unlock(&philo->data->non_dead_mutex);
-		return (1);
+		return (ERROR);
 	}
 	pthread_mutex_unlock(&philo->data->non_dead_mutex);
 	usleepp(philo->data->time2sleep);
-	return (0);
+	return (SUCCESS);
 }
 
 int	thinking(t_philo *philo)
@@ -106,8 +106,8 @@ int	thinking(t_philo *philo)
 			&& philo->data->max_nmeals != -1))
 	{
 		pthread_mutex_unlock(&philo->data->non_dead_mutex);
-		return (1);
+		return (ERROR);
 	}
 	pthread_mutex_unlock(&philo->data->non_dead_mutex);
-	return (0);
+	return (SUCCESS);
 }
