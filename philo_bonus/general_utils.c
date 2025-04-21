@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:09:12 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 20:01:42 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:34:05 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	exit_message(char *s, int status)
 {
 	if (!s)
 		exit(status);
-	printf("%s\n", s);
+	printfd(2, "%s\n", s);
 	exit(status);
 }
 

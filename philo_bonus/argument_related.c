@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:12:08 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 20:01:21 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:35:20 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,19 @@
 
 int	arguments_error(void)
 {
-	printf("the program expects the following:\n./philo ");
-	printf("%s<%snumber_of_philosophers%s>%s ", BLUE, GREEN, BLUE, RESET);
-	printf("%s<%stime_to_die%s> %s ", BLUE, GREEN, BLUE, RESET);
-	printf("%s<%stime_to_eat%s> %s ", BLUE, GREEN, BLUE, RESET);
-	printf("%s<%stime_to_sleep%s> %s ", BLUE, GREEN, BLUE, RESET);
-	printf("%s<%s(opt):[Number of Meals]%s> %s\n", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "the program expects the following:\n./philo ");
+	printfd(2, "%s<%snumber_of_philosophers%s>%s ", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "%s<%stime_to_die%s> %s ", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "%s<%stime_to_eat%s> %s ", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "%s<%stime_to_sleep%s> %s ", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "%s<%s(opt):[Number of Meals]%s> %s\n", BLUE, GREEN,
+		BLUE, RESET);
+	printfd(2, "the program expects 4 or 5 arguments\n");
+	printfd(2, RED"please make sure that:\n"RESET);
+	printfd(2, "1. the number of philosophers is between 1 and 200\n");
+	printfd(2, "2. the time to die, eat and sleep are greater than 60ms\n");
+	printfd(2, "4. the arguments are positive integers\n");
+	printfd(2, "5. the arguments are not empty\n");
 	return (ERROR);
 }
 
@@ -31,16 +38,19 @@ int	argument_checkers(char **av)
 	while (av[i])
 	{
 		if (ft_atol(av[1]) < 1 || ft_atol(av[1]) == 0)
-			return (printf(RED "2 or more Philos are required.\n" RESET),
+			return (printfd(2, RED "2 or more Philos are required.\n" RESET),
 				ERROR);
 		if (ft_atol(av[1]) > 200)
-			return (printf(RED "Philos're more than 200.\n" RESET), ERROR);
+			return (printfd(2, RED "Philos're more than 200.\n" RESET),
+				ERROR);
 		if (non_num_found(av[i]))
 			return (arguments_error(), ERROR);
 		if ((i != 5 && ft_atol(av[i]) == 0))
-			return (printf(RED "Please provide a valid input.\n" RESET), ERROR);
+			return (printfd(2, RED "Please provide a valid input.\n" RESET),
+				ERROR);
 		if (i != 1 && i != 5 && ft_atol(av[i]) < 60)
-			return (printf(RED "Times should be above 60ms.\n" RESET), ERROR);
+			return (printfd(2, RED "Times should be above 60ms.\n" RESET),
+				ERROR);
 		i++;
 	}
 	return (SUCCESS);

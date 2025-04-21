@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/21 14:45:41 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:42:19 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include "../printfd/printfd.h"
 
 # define ERROR 1
 # define SUCCESS 0
