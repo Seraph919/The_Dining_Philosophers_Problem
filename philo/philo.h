@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 14:59:33 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:45:41 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int					arguments_error(void);
 void				*monitor(void *data_p);
 bool				philo_died(t_philo *philo);
 int					arguments_check(int argc, char **argv);
-size_t				ft_atol(const char *str);
+long long			ft_atol(const char *str);
 int					check_input(int argc, char **argv);
 int					simulation(t_data *data);
 void				*routine(void *philo_p);

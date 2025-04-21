@@ -6,13 +6,13 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:40:16 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/18 18:23:10 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/20 20:36:14 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	ft_atol(const char *str)
+long long	ft_atol(const char *str)
 {
 	size_t	i;
 	size_t	number;
@@ -25,7 +25,11 @@ size_t	ft_atol(const char *str)
 	if (str[i] == '+')
 		i++;
 	while ((str[i] >= '0' && str[i] <= '9'))
+	{
 		number = number * 10 + (str[i++] - '0');
+		if (number >= 2147483647)
+			return (-2147483648);
+	}
 	return (number);
 }
 

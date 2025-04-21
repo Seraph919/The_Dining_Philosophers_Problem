@@ -6,11 +6,27 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:09:18 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 12:20:20 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:26:12 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+bool	full(t_data *data, int i)
+{
+	static int	all_full;
+
+	pthread_mutex_lock(&data->meal_counter_mutex);
+	if (data->max_nmeals != -1
+		&& data->philos[i].nb_meals_had >= data->max_nmeals)
+	{
+		all_full++;
+		if (all_full == data->philo_nbrs)
+			return (pthread_mutex_unlock(&data->meal_counter_mutex), true);
+	}
+	pthread_mutex_unlock(&data->meal_counter_mutex);
+	return (false);
+}
 
 void	*monitor(void *arg)
 {
@@ -26,13 +42,12 @@ void	*monitor(void *arg)
 		pthread_mutex_lock(&data->non_dead_mutex);
 		if (data->no_one_died == false)
 			return (pthread_mutex_unlock(&data->non_dead_mutex), NULL);
+		if (full(data, i))
+			return (pthread_mutex_unlock(&data->non_dead_mutex), NULL);
 		if (philo_died(&philos[i]) && data->no_one_died)
-		{
-			data->no_one_died = false;
-			pthread_mutex_unlock(&data->non_dead_mutex);
-			print_msg(data, philos[i].id, DIED);
-			break ;
-		}
+			return (data->no_one_died = false,
+				pthread_mutex_unlock(&data->non_dead_mutex),
+				print_msg(data, philos[i].id, DIED), NULL);
 		if (i == data->philo_nbrs - 1)
 			i = -1;
 		pthread_mutex_unlock(&data->non_dead_mutex);

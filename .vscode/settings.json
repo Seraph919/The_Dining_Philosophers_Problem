@@ -1,5 +1,12 @@
 {
 	"files.associations": {
-		"philo.h": "c"
+		"philo.h": "c",
+		"stdlib.h": "c"
+	},
+	"github.copilot.enable": {
+		"*": false,
+		"plaintext": false,
+		"markdown": false,
+		"scminput": false
 	}
 }
