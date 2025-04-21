@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 20:15:46 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 20:03:52 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:20:55 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <unistd.h>
+# include "../printfd/printfd.h"
 
 # define RESET "\033[0m"
 # define BLUE "\033[1;34m"

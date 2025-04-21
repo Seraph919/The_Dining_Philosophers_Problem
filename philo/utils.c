@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:40:16 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 20:36:14 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:40:48 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ size_t	get_time(void)
 
 int	return_error(char *msg)
 {
-	printf("%s\n", msg);
+	printfd(2, "%s\n", msg);
 	return (ERROR);
 }
