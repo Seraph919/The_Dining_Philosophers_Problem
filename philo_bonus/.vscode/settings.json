@@ -1,6 +1,15 @@
 {
 	"files.associations": {
 		"philo_bonus.h": "c",
-		"string.h": "c"
+		"string.h": "c",
+		"type_traits": "c",
+		"chrono": "c",
+		"span": "c"
+	},
+	"github.copilot.enable": {
+		"*": false,
+		"plaintext": false,
+		"markdown": false,
+		"scminput": false
 	}
 }

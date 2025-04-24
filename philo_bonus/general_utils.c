@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:09:12 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/21 17:34:05 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:52:02 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 	and we convert the microseconds to miliseconds by dividing it by 1000
 	then we add the two values together to get the current time in miliseconds
 */
+
 size_t	ms_curr_time(void)
 {
 	struct timeval	tv;
@@ -35,15 +36,46 @@ size_t	ms_curr_time(void)
 	the given number of milliseconds
 */
 
-void	mssleep(size_t milliseconds)
+// void	mssleep(size_t milliseconds)
+// {
+// 	size_t	start;
+
+// 	start = ms_curr_time();
+// 	while ((ms_curr_time() - start) < (milliseconds))
+// 		usleep(500);
+// 	return ;
+// }
+
+void	mssleep(size_t sleep_time, t_philo *philo, bool first)
 {
 	size_t	start;
 
 	start = ms_curr_time();
-	while ((ms_curr_time() - start) < (milliseconds))
-		usleep(200);
-	return ;
+	while ((ms_curr_time() - start) < sleep_time)
+	{
+		pthread_mutex_lock(&philo->dead_lock);
+		if (philo->data->stop->__align == 1)
+			return (pthread_mutex_unlock(&philo->dead_lock), (void)0);
+		pthread_mutex_unlock(&philo->dead_lock);
+		pthread_mutex_lock(&philo->last_meal_up);
+		if (ms_curr_time() - philo->last_meal_t > philo->data->time_to_die
+			&& !first)
+		{
+			pthread_mutex_unlock(&philo->last_meal_up);
+			pthread_mutex_lock(&philo->dead_lock);
+			if (philo->data->stop->__align == 0)
+			{
+				print_message(philo, DIED);
+				philo->data->stop->__align = 1;
+			}
+			return (pthread_mutex_unlock(&philo->dead_lock), (void)0);
+		}
+		pthread_mutex_unlock(&philo->last_meal_up);
+		usleep(500);
+	}
 }
+
+// ! i removed the pthread_mutex_unlock(&philo->dead_lock) above align = 1 ^^
 
 bool	non_num_found(char *s)
 {
@@ -69,19 +101,23 @@ void	exit_message(char *s, int status)
 	exit(status);
 }
 
-unsigned long	ft_atol(const char *str)
+long long	ft_atol(const char *str)
 {
-	unsigned long	i;
-	unsigned long	number;
+	long long	i;
+	long long	number;
 
 	i = 0;
 	number = 0;
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
 		|| str[i] == '\r' || str[i] == '\f')
 		i++;
-	if (str[i] == '+')
+	if (str[i] == '+' || str[i] == '-')
 		i++;
 	while ((str[i] >= '0' && str[i] <= '9'))
+	{
 		number = number * 10 + (str[i++] - '0');
+		if (number > INT_MAX)
+			return (INT_MIN);
+	}
 	return (number);
 }

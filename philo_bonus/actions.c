@@ -6,60 +6,11 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:14:43 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 20:01:56 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:52:13 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-/*
-	the monitor function is used to check if the philosopher has died
-	I'ts running in a separate thread and it checks if the last meal time
-	is greater than the time to die
-	if it is, then we set the dead flag to true and post to the quiter semaphore
-	which will cause the main process to kill all the philosophers and exit.
-
-	i faced several issues with the monitor function, especially
-	with the data races.
-	so I had to use a mutex lock to protect the access to the last meal time
-	and the dead flag.
-	also..
-	it was previously like this :
-
-	void *monitor(void *arg)
-	{
-		t_philo *philo;
-
-		philo = (t_philo *)arg;
-		while (1)
-		{
-			pthread_mutex_lock(&philo->m_lock);
-			if (philo->last_meal_t > 0)
-			{
-	if (philo->data->time_to_die <= ms_curr_time()-philo->last_meal_t)
-				{
-					pthread_mutex_lock(&philo->dead_lock);
-					philo->dead = true;
-					pthread_mutex_unlock(&philo->dead_lock);
-					sem_post(philo->data->quiter);
-					pthread_mutex_unlock(&philo->m_lock); // Ensure unlock
-					break ;
-				}
-			}
-			pthread_mutex_unlock(&philo->m_lock);
-				// Ensure unlock in other cases
-		}
-		return (NULL);
-	}
-	but it exists before unlocking the mutex lock (m_lock), which
-	caused a deadlock.
-	so I had to use a boolean flag to check if
-	the monitor function should exit or not.
-*/
-
-/*
-	had to add a delay some philos to avoid the deadlocks
-*/
 
 void	print_message(t_philo *philo, char *msg)
 {
@@ -69,18 +20,23 @@ void	print_message(t_philo *philo, char *msg)
 	not_full = philo->meal_counter < philo->max_meals;
 	sem_wait(philo->data->print_lock);
 	time = ms_curr_time() - philo->data->start_time;
-	if (philo->dead == false)
+	if (philo->data->stop->__align != 1 && philo->dead == false)
 	{
 		if (philo->id % 2)
-			printf(BLUE "%zu %zu is %s\n" RESET, time, philo->id, msg);
+			printf(BLUE "%zu %zu %s\n" RESET, time, philo->id, msg);
 		else
-			printf(GREEN "%zu %zu is %s\n" RESET, time, philo->id, msg);
+			printf(GREEN "%zu %zu %s\n" RESET, time, philo->id, msg);
 	}
-	else if (msg[0] == 'd' && (not_full || philo->max_meals == -1))
+	else if (msg[0] == 'd' && philo->data->print_bool->__align != 0 && (not_full
+			|| philo->max_meals == -1))
 	{
+		sem_wait(philo->data->bool_lock);
+		philo->data->print_bool->__align = 0;
+		sem_post(philo->data->bool_lock);
 		printf(RED "%zu %zu %s\n" RESET, time, philo->id, DIED);
 		sem_post(philo->data->print_lock);
-		sem_post(philo->data->quiter);
+		philo->data->stop->__align = 1;
+		return ;
 	}
 	sem_post(philo->data->print_lock);
 }
@@ -97,34 +53,41 @@ void	fork_taking(t_philo *philo)
 	print_message(philo, FORK);
 }
 
-void	eating(t_philo *philo)
+int	eating(t_philo *philo)
 {
 	fork_taking(philo);
+	print_message(philo, EAT);
+	mssleep(philo->data->time_to_eat, philo, false);
 	pthread_mutex_lock(&philo->last_meal_up);
 	philo->last_meal_t = ms_curr_time();
 	pthread_mutex_unlock(&philo->last_meal_up);
-	print_message(philo, EAT);
-	mssleep(philo->data->time_to_eat);
-	pthread_mutex_lock(&philo->m_lock);
+	pthread_mutex_lock(&philo->meal_mutex);
 	philo->meal_counter++;
-	if (philo->meal_counter == philo->max_meals)
-		return (post_and_end(philo));
-	pthread_mutex_unlock(&philo->m_lock);
+	if (philo->meal_counter >= philo->max_meals && philo->max_meals != -1)
+		return (post_and_end(philo), ERROR);
+	pthread_mutex_unlock(&philo->meal_mutex);
 	sem_post(philo->data->forks);
 	sem_post(philo->data->forks);
 	pthread_mutex_lock(&philo->dead_lock);
 	if (philo->dead == true && philo->meal_counter != philo->max_meals)
-		sem_post(philo->data->quiter);
+	{
+		philo->data->stop->__align = 1;
+		pthread_mutex_unlock(&philo->dead_lock);
+		return (ERROR);
+	}
 	pthread_mutex_unlock(&philo->dead_lock);
+	return (SUCCESS);
 }
 
-void	thinking(t_philo *philo)
+int	thinking(t_philo *philo)
 {
 	print_message(philo, TNK);
+	return (SUCCESS);
 }
 
-void	sleeping(t_philo *philo)
+int	sleeping(t_philo *philo)
 {
+	mssleep(philo->data->time_to_sleep, philo, false);
 	print_message(philo, SLEEP);
-	mssleep(philo->data->time_to_sleep);
+	return (SUCCESS);
 }

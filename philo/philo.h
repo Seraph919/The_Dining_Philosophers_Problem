@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/21 17:42:19 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:04:55 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ int					simulation(t_data *data);
 void				*routine(void *philo_p);
 int					sleeping(t_philo *philo);
 int					thinking(t_philo *philo);
-void				usleepp(size_t sleep_time);
-size_t				get_time(void);
+void				mssleep(size_t sleep_time, t_data *data);
+size_t				ms_curr_time(void);
 void				handle_1_philo(t_philo *philo);
 void				fireforce(t_data *data);
 void				print_msg(t_data *data, int id, char *msg);

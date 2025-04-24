@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 18:28:13 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/21 15:18:10 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/22 11:52:33 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	simulation(t_data *data)
 	int	i;
 
 	i = -1;
-	data->start_time = get_time();
+	data->start_time = ms_curr_time();
 	while (++i < data->philo_nbrs)
 	{
 		if (pthread_create(&data->philo_ths[i], NULL, &routine,

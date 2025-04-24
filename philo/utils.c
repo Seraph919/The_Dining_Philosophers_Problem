@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:40:16 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/21 17:40:48 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/22 11:55:12 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ long long	ft_atol(const char *str)
 	while ((str[i] >= '0' && str[i] <= '9'))
 	{
 		number = number * 10 + (str[i++] - '0');
-		if (number >= 2147483647)
+		if (number > 2147483647)
 			return (-2147483648);
 	}
 	return (number);
@@ -49,16 +49,25 @@ bool	non_numeric_found(char *s)
 	return (false);
 }
 
-void	usleepp(size_t sleep_time)
+void	mssleep(size_t sleep_time, t_data *data)
 {
 	size_t	start;
+	bool	stop;
 
-	start = get_time();
-	while ((get_time() - start) < sleep_time)
+	start = ms_curr_time();
+	pthread_mutex_lock(&data->non_dead_mutex);
+	stop = !data->no_one_died;
+	pthread_mutex_unlock(&data->non_dead_mutex);
+	while ((ms_curr_time() - start) < sleep_time && !stop)
+	{
+		pthread_mutex_lock(&data->non_dead_mutex);
+		stop = !data->no_one_died;
+		pthread_mutex_unlock(&data->non_dead_mutex);
 		usleep(500);
+	}
 }
 
-size_t	get_time(void)
+size_t	ms_curr_time(void)
 {
 	struct timeval	tv;
 
