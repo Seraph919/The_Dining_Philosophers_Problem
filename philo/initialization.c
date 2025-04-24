@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:44:30 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 14:59:33 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/22 11:52:24 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	philo_init(t_data *data)
 		if (pthread_mutex_init(&philos[i].last_eat_mutex, NULL) != 0)
 			return (ERROR);
 		pthread_mutex_lock(&philos[i].last_eat_mutex);
-		philos[i].last_eat_time = get_time();
+		philos[i].last_eat_time = ms_curr_time();
 		pthread_mutex_unlock(&philos[i].last_eat_mutex);
 	}
 	return (SUCCESS);

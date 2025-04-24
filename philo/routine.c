@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 18:01:54 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/21 15:27:14 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/22 11:55:09 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->data->phile_died_mutex);
-	philo->last_eat_time = get_time();
+	philo->last_eat_time = ms_curr_time();
 	pthread_mutex_unlock(&philo->data->phile_died_mutex);
 	if (philo->id % 2 == 0)
-		usleepp(philo->data->time2eat - 10);
+		mssleep(philo->data->time2eat - 10, philo->data);
 	if (philo->data->philo_nbrs == 1)
 		return (handle_1_philo(philo), NULL);
 	while (1)
@@ -72,9 +72,9 @@ int	eating(t_philo *philo)
 		return (ERROR);
 	print_msg(philo->data, philo->id, EAT);
 	pthread_mutex_lock(&philo->data->phile_died_mutex);
-	philo->last_eat_time = get_time();
+	philo->last_eat_time = ms_curr_time();
 	pthread_mutex_unlock(&philo->data->phile_died_mutex);
-	usleepp(philo->data->time2eat);
+	mssleep(philo->data->time2eat, philo->data);
 	pthread_mutex_lock(&philo->data->meal_counter_mutex);
 	philo->nb_meals_had++;
 	pthread_mutex_unlock(&philo->data->meal_counter_mutex);
@@ -93,7 +93,7 @@ int	sleeping(t_philo *philo)
 		return (ERROR);
 	}
 	pthread_mutex_unlock(&philo->data->non_dead_mutex);
-	usleepp(philo->data->time2sleep);
+	mssleep(philo->data->time2sleep, philo->data);
 	return (SUCCESS);
 }
 

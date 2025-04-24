@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/20 14:59:33 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:10:44 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	philo_died(t_philo *philo)
 
 	data = philo->data;
 	pthread_mutex_lock(&data->phile_died_mutex);
-	if (get_time() - philo->last_eat_time > data->time2die)
+	if (ms_curr_time() - philo->last_eat_time > data->time2die)
 	{
 		pthread_mutex_unlock(&data->phile_died_mutex);
 		return (true);
@@ -30,7 +30,7 @@ bool	philo_died(t_philo *philo)
 void	handle_1_philo(t_philo *philo)
 {
 	take_left_fork(philo);
-	usleepp(philo->data->time2die);
+	mssleep(philo->data->time2die, philo->data);
 	pthread_mutex_unlock(philo->left_f);
 	pthread_mutex_lock(&philo->data->non_dead_mutex);
 	philo->data->no_one_died = false;
@@ -66,7 +66,7 @@ void	print_msg(t_data *data, int id, char *msg)
 	pthread_mutex_lock(&data->meal_counter_mutex);
 	not_full = data->philos[id -1].nb_meals_had != data->max_nmeals;
 	pthread_mutex_unlock(&data->meal_counter_mutex);
-	time = get_time() - data->start_time;
+	time = ms_curr_time() - data->start_time;
 	pthread_mutex_lock(&data->print_lock);
 	pthread_mutex_lock(&data->non_dead_mutex);
 	if (data->no_one_died)
