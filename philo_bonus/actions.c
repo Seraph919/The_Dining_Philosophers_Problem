@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:14:43 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/24 17:52:13 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:31:56 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	print_message(t_philo *philo, char *msg)
 	not_full = philo->meal_counter < philo->max_meals;
 	sem_wait(philo->data->print_lock);
 	time = ms_curr_time() - philo->data->start_time;
-	if (philo->data->stop->__align != 1 && philo->dead == false)
+	if (philo->data->stop->__align != 1
+		&& philo->dead == false && msg[0] != 'd')
 	{
 		if (philo->id % 2)
 			printf(BLUE "%zu %zu %s\n" RESET, time, philo->id, msg);
@@ -35,8 +36,7 @@ void	print_message(t_philo *philo, char *msg)
 		sem_post(philo->data->bool_lock);
 		printf(RED "%zu %zu %s\n" RESET, time, philo->id, DIED);
 		sem_post(philo->data->print_lock);
-		philo->data->stop->__align = 1;
-		return ;
+		return (philo->data->stop->__align = 1, (void)0);
 	}
 	sem_post(philo->data->print_lock);
 }
@@ -87,7 +87,7 @@ int	thinking(t_philo *philo)
 
 int	sleeping(t_philo *philo)
 {
-	mssleep(philo->data->time_to_sleep, philo, false);
 	print_message(philo, SLEEP);
+	mssleep(philo->data->time_to_sleep, philo, false);
 	return (SUCCESS);
 }
