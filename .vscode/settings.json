@@ -2,7 +2,8 @@
 	"files.associations": {
 		"philo.h": "c",
 		"stdlib.h": "c",
-		"printfd.h": "c"
+		"printfd.h": "c",
+		"stdio.h": "c"
 	},
 	"github.copilot.enable": {
 		"*": false,
