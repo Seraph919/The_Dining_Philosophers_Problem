@@ -6,7 +6,7 @@
 #    By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 16:45:58 by asoudani          #+#    #+#              #
-#    Updated: 2025/04/24 17:45:44 by asoudani         ###   ########.fr        #
+#    Updated: 2025/04/24 19:51:49 by asoudani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ GREEN=  "\033[1;32m"
 RED=	"\033[1;31m"
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=thread
 
 SRC = main.c cleaner.c actions.c general_utils.c philo_simulation.c argument_related.c inits.c
 
