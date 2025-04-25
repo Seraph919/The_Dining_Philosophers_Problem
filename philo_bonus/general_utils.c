@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 10:09:12 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/24 17:52:02 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:52:22 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	mssleep(size_t sleep_time, t_philo *philo, bool first)
 		usleep(500);
 	}
 }
-
-// ! i removed the pthread_mutex_unlock(&philo->dead_lock) above align = 1 ^^
 
 bool	non_num_found(char *s)
 {
