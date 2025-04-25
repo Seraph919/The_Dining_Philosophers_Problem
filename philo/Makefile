@@ -6,7 +6,7 @@
 #    By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 20:28:32 by asoudani          #+#    #+#              #
-#    Updated: 2025/04/25 11:27:29 by asoudani         ###   ########.fr        #
+#    Updated: 2025/04/22 09:27:37 by asoudani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ GREEN=  "\033[1;32m"
 RED=	"\033[1;31m"
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=thread
 
 SRC = philo_utils.c utils.c arg_related.c routine.c initialization.c main.c monitoring.c fork_utils.c
 PRINTFD = ../printfd/printfd.a

@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:44:20 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/25 10:58:16 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/25 16:28:17 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,54 @@
 
 int	arguments_error(void)
 {
-	printfd(2, RED "\nPhilo expects the following:\n" RESET);
-	printfd(2, "1. The number of philosophers\n");
-	printfd(2, "2. The time a philosopher must eat before or they die\n");
-	printfd(2, "3. The time each philosopher spends while eating\n");
-	printfd(2, "4. The time each philosopher spends sleeping\n");
-	printfd(2, "5. The number of meals a philos must eat to stop(opt)\n");
-	printfd(2, RED "\nplease make sure that:\n" RESET);
-	printfd(2, "1. The number of philosophers is between 1 and 200\n");
-	printfd(2, "2. The time to die, eat and sleep are greater than 60ms\n");
-	printfd(2, "4. The arguments are positive integers\n");
-	printfd(2, "5. The arguments are not empty\n\n");
+	printfd(2, "the program expects the following:\n./philo ");
+	printfd(2, "%s<%snumber_of_philosophers%s>%s ", BLUE, GREEN, BLUE,
+		RESET);
+	printfd(2, "%s<%stime_to_die%s> %s ", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "%s<%stime_to_eat%s> %s ", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "%s<%stime_to_sleep%s> %s ", BLUE, GREEN, BLUE, RESET);
+	printfd(2, "%s<%s(opt):[Number of Meals]%s> %s\n", BLUE, GREEN, BLUE,
+		RESET);
+	printfd(2, "the program expects 4 or 5 arguments\n");
+	printfd(2, RED"please make sure that:\n"RESET);
+	printfd(2, "1. the number of philosophers is between 1 and 200\n");
+	printfd(2, "2. the time to die, eat and sleep are greater than 60ms\n");
+	printfd(2, "4. the arguments are positive integers\n");
+	printfd(2, "5. the arguments are not empty\n");
 	return (ERROR);
 }
 
-int	arguments_check(int ac, char **av)
-{
-	int	i;
+// int	arguments_check(int ac, char **av)
+// {
+// 	int	i;
 
-	i = 1;
-	if (ac == 6 && ft_atol(av[5]) <= 0)
-		return (ERROR);
-	if (ft_atol(av[i]) < 1 || ft_atol(av[i]) > 200 || ft_atol(av[i]) < 0)
-		return (ERROR);
-	while (++i < 5)
-	{
-		if (ft_atol(av[i]) < 60)
-			return (ERROR);
-	}
-	return (SUCCESS);
-}
+// 	i = 1;
+// 	if (ac == 6 && ft_atol(av[5]) <= 0)
+// 		return (ERROR);
+// 	if (ft_atol(av[i]) < 1 || ft_atol(av[i]) > 200 || ft_atol(av[i]) < 0)
+// 		return (ERROR);
+// 	while (++i < 5)
+// 	{
+// 		if (ft_atol(av[i]) < 60)
+// 			return (ERROR);
+// 	}
+// 	return (SUCCESS);
+// }
+
+// int	check_input(int ac, char **av)
+// {
+// 	int	i;
+
+// 	i = 1;
+// 	while (i < ac)
+// 	{
+// 		if (non_numeric_found(av[i]))
+// 			return (ERROR);
+// 	}
+// 	if (arguments_check(ac, av))
+// 		return (ERROR);
+// 	return (0);
+// }
 
 int	argument_checkers(char **av)
 {
@@ -52,8 +70,6 @@ int	argument_checkers(char **av)
 	i = 1;
 	while (av[i])
 	{
-		if (ft_atol(av[1]) < 0)
-			return (arguments_error(), ERROR);
 		if (non_numeric_found(av[i]) || ft_atol(av[i]) == INT_MIN)
 		{
 			if (ft_atol(av[i]) == INT_MIN)
@@ -63,8 +79,6 @@ int	argument_checkers(char **av)
 		}
 		if ((i != 5 && i != 1 && ft_atol(av[i]) == 0))
 			return (arguments_error(), ERROR);
-		if (av[5] && ft_atol(av[i]) == 0)
-			exit(0);
 		i++;
 	}
 	return (SUCCESS);
