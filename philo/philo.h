@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:21:37 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/22 12:04:55 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/25 15:57:18 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
+# include <limits.h>
 # include <unistd.h>
 # include "../printfd/printfd.h"
 
@@ -56,6 +57,8 @@ typedef struct s_philo
 	pthread_mutex_t	*left_f;
 	pthread_mutex_t	*right_f;
 	pthread_mutex_t	last_eat_mutex;
+	pthread_mutex_t full_mutex;
+	bool			full;
 	size_t			last_eat_time;
 }					t_philo;
 
