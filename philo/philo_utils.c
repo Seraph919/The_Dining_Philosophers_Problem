@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:25:10 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/25 14:33:49 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/25 16:20:49 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	print_msg(t_data *data, int id, char *msg)
 	time = ms_curr_time() - data->start_time;
 	pthread_mutex_lock(&data->print_lock);
 	pthread_mutex_lock(&data->non_dead_mutex);
-	if (data->no_one_died)
+	if (data->no_one_died && msg[0] != 'd')
 	{
 		pthread_mutex_unlock(&data->non_dead_mutex);
 		if (id % 2)
