@@ -6,7 +6,7 @@
 /*   By: asoudani <asoudani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 18:28:13 by asoudani          #+#    #+#             */
-/*   Updated: 2025/04/25 16:28:45 by asoudani         ###   ########.fr       */
+/*   Updated: 2025/04/25 18:55:01 by asoudani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ int	main(int ac, char **av)
 {
 	t_data	data;
 
-	if (ac < 5 || ac > 6 || argument_checkers(av) != SUCCESS)
+	if (ac < 5 || ac > 6)
+		return (arguments_error(), ERROR);
+	if (argument_checkers(av) != SUCCESS)
 		return (ERROR);
 	if (ft_atol(av[1]) == 0 || (av[5] && ft_atol(av[5]) == 0))
 		return (SUCCESS);
